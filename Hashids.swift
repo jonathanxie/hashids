@@ -10,9 +10,9 @@ import Foundation
 
 // MARK: Hashids options
 
-struct HashidsOpts
+public struct HashidsOptions
 {
-    static let VERSION = "1.0.0";
+    static let VERSION = "1.1.0";
     
     static var MIN_ALPHABET_LENGTH:Int = 16;
     
@@ -28,7 +28,7 @@ struct HashidsOpts
 
 // MARK: Hashids protocol
 
-protocol HashidsGenerator
+public protocol HashidsGenerator
 {
     typealias Char;
     
@@ -66,8 +66,8 @@ public class Hashids_<T where T:Equatable, T:UnsignedIntegerType> : HashidsGener
     
     public init(salt:String!, minHashLength:UInt = 0, alphabet:String? = nil)
     {
-        var _alphabet = (alphabet != nil) ? alphabet! : HashidsOpts.ALPHABET;
-        var _seps = HashidsOpts.SEPARATORS;
+        var _alphabet = (alphabet != nil) ? alphabet! : HashidsOptions.ALPHABET;
+        var _seps = HashidsOptions.SEPARATORS;
         
         self.minHashLength = minHashLength;
         self.guards = [Char]();
@@ -83,9 +83,9 @@ public class Hashids_<T where T:Equatable, T:UnsignedIntegerType> : HashidsGener
         let sepsLength = self.seps.count;
         let alphabetLength = self.alphabet.count;
         
-        if ( (0 == sepsLength) || (Double(alphabetLength) / Double(sepsLength) > HashidsOpts.SEP_DIV) ) {
+        if ( (0 == sepsLength) || (Double(alphabetLength) / Double(sepsLength) > HashidsOptions.SEP_DIV) ) {
             
-            var newSepsLength = Int(ceil(Double(alphabetLength) / HashidsOpts.SEP_DIV));
+            var newSepsLength = Int(ceil(Double(alphabetLength) / HashidsOptions.SEP_DIV));
             
             if(1 == newSepsLength) {
                 newSepsLength += 1;
@@ -106,7 +106,7 @@ public class Hashids_<T where T:Equatable, T:UnsignedIntegerType> : HashidsGener
         
         shuffle(&self.alphabet, self.salt);
         
-        let guard = Int(ceil(Double(alphabetLength)/HashidsOpts.GUARD_DIV));
+        let guard = Int(ceil(Double(alphabetLength)/HashidsOptions.GUARD_DIV));
         if(alphabetLength < 3)
         {
             let seps_guard = advance(self.seps.startIndex,guard);
